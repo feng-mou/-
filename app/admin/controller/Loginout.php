@@ -1,14 +1,14 @@
-<?php 
+<?php
     namespace app\admin\controller;
     use app\admin\controller\BaseAdmin;
-                
+
     class Loginout extends BaseAdmin
     {
-        //ÍË³öµÇÂ¼Âß¼­
+        //é€€å‡ºç™»å½•
         public function index(){
-            //Çå³ýsession
+            //æ¸…é™¤session
             session(config('admin.session_admin'),null);
-            //Ìø×ªµÇÂ¼
+            //è·³è½¬åœ°å€
             return $this->redirect(url('login/index'));
         }
     }

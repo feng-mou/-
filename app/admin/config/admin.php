@@ -1,5 +1,5 @@
-<?php 
-    //sessionÃû³Æ
+<?php
+    //sessionåç§°
     return [
         'session_admin'=>'adminUser',
     ];

@@ -1,16 +1,18 @@
-<?php 
+<?php
     namespace app\admin\controller;
     use think\facade\View;
-    //use think\captcha\facade\Captcha;
+    use think\captcha\facade\Captcha;
     use app\admin\controller\BaseAdmin;
-    use app\common\model\mysql\AdminUser;
+    use app\admin\model\mysql\AdminUser;
+    //引入云通信
+    use app\common\lib\Ytx;
     class Login extends BaseAdmin{
-        
+
         public function index()
         {
             return View::fetch('login/index');
         }
-        
+
         //登入验证
         public function check(){
             if(!$this->request->isPost()){
@@ -20,67 +22,62 @@
             $username = $this->request->param("username","","trim");
             $password = $this->request->param("password","","trim");
             $captcha = $this->request->param("captcha","","trim");
-            if(empty($username) || empty($password) || empty($captcha)){
-                return json(['status'=>config("status.error"),'msg'=>" 参数错误"]);
+
+            //把值放入数组
+            $cc=[
+                'username'=>$username,
+                'password'=>$password,
+                'captcha'=>$captcha,
+            ];
+            //使用tp6的validate验证是否合法机制
+            $validate = new \app\admin\validate\AdminUser;
+            if(!$validate->check($cc)){
+                return json(['status'=>config("status.error"),'msg'=>$validate->getError()]);
             }
-            
-            //把app目录下面的middleware.php文件的Session初始化\think\middleware\SessionInit::class打开
-            
-            /*if(!captcha_check($captcha)){
-                return json(['status'=>config("status.error"),'msg'=>"$captcha"]);
+
+            /*if(empty($username) || empty($password) || empty($captcha)){
+                return json(['status'=>config("status.error"),'msg'=>" 参数错误"]);
             }*/
-           try {
-                $obj=new AdminUser();
-                $result=$obj->getAdmin_User($username);
-                if(empty($result)||$result->status!=config('status.mysql.table_normal')){
-                    return json(['status'=>config("status.error"),'msg'=>"用户不存在"]);
-                }
-                $res=$result->toArray();
-                //判断密码是否正确
-                if($res['password'] != md5($password)){
-                    return json(['status'=>config("status.error"),'msg'=>"密码错误"]);
-                }
-                
-                $id=$res['id'];
-                $data=[
-                    'update_time'=>time(),
-                    'last_login_time'=>time(),
-                    'last_login_ip'=>request()->ip()
-                ];
-                //更新数据库数据
-                $update=$obj->updateById($id,$data);
-                if(empty($update)){
-                    return json(['status'=>config("status.error"),'msg'=>"登录失败"]);
-                }
-           } catch (\Exception $e){
-               return json(['status'=>config("status.error"),'msg'=>"内部错误登录失败"]);
-           }
-           session(config('admin.session_admin'),$res);
-            return json(['status'=>config("status.success"),'msg'=>"登录成功"]);
-            //return json(['status'=>config("status.error"),'msg'=>"登录失败"]);
+
+            //把app目录下面的middleware.php文件的Session初始化\think\middleware\SessionInit::class打开
+
+            if(!captcha_check($captcha)){
+                return json(['status'=>config("status.error"),'msg'=>"验证码错误"]);
+            }
+            try{
+                $AdminUserObj=new \app\admin\business\AdminUser();
+                $result = $AdminUserObj->login($cc);
+            } catch (\Exception $e){
+                return json(['status'=>config("status.error"),'msg'=>$e->getMessage()]);
+            }
+            //判断是否为true否则弹出错误
+            if($result){
+                return json(['status'=>config("status.success"),'msg'=>"登录成功"]);
+            }
+            return json(['status'=>config("status.error"),'msg'=>$AdminUserObj->getError()]);
         }
-        
+
         //继承文件方法会有点问题
         /*public function initialize(){
             //初始化
             if($this->isLogin()){
                 echo "已经登录";
-                
+
                 return $this->redirect(url("index/index"));
             }
             echo "没有登录";
         }*/
-        
+
         public function md5(){
             //session(config('admin.session_admin'),'张三');
-            halt(session(config('admin.session_admin')));
-            echo md5(123456);
+            //halt(session(config('admin.session_admin')));
+            echo md5('admin');
         }
-        
-        public function test(){
-            $obj=new AdminUser();
-            $result=$obj->getAdmin_User('admin');
-            dd($result);
+
+        public function sms(){
+            echo 1;
+            //$smsYtx = new Ytx();
+           //sendTemplateSMS('19974233942',array('928388',1),1);
         }
     }
 ?>
