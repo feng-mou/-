@@ -3,5 +3,4 @@
 /vendor
 *.log
 .env
-//aliyun.php
-//xin2.text
+#cc.text
