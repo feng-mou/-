@@ -9,6 +9,7 @@
      * @host 返回地址
      */
     return[
+        'cc'=>11,
         'accessKeyId'=>'LTAI4GAT2bp8K7KatXUyucuK',
         'accessSecret'=>'25vQeT3SprTvGsP357u5W9EuzgV3zD',
         'cn-hangzhou'=>'cn-hangzhou',
