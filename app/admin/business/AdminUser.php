@@ -37,7 +37,7 @@ class AdminUser{
             'last_login_time'=>time(),
             'last_login_ip'=>request()->ip()
         ];
-        //更新数据库数据
+        //更新数据库数据,更新时间
         $update=$this->obj->updateById($id,$data2);
         if(empty($update))
         {

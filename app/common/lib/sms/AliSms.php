@@ -5,6 +5,8 @@
     use AlibabaCloud\Client\AlibabaCloud;
     use AlibabaCloud\Client\Exception\ClientException;
     use AlibabaCloud\Client\Exception\ServerException;
+    use think\facade\Log;
+
     class AliSms
     {
         /**
@@ -13,7 +15,7 @@
          * @return bool 返回类型
          * @throws ClientException
          */
-        public function aliSms(string $phone,int  $code) :bool
+        public static function sendCode(string $phone,int  $code) :bool
         {
             if(empty($phone) || empty($code)) {
                 return false;
@@ -43,13 +45,26 @@
                         ],
                     ])
                     ->request();
+                //print_r($result->toArray());
+                //info信息,error错误信息
+                //成功日志
+                Log::info("AliSms_aliSms_{$phone}result".json_encode($result->toArray()));
             } catch (ClientException $e) {
+                //错误日志
+                Log::error('AliSms_aliSms_ClientException'.$e->getErrorMessage());
                 return false;
                 //echo $e->getErrorMessage() . PHP_EOL;
             } catch (ServerException $e) {
+                //错误日志
+                Log::error('AliSms_aliSms_ServerException'.$e->getErrorMessage());
                 return false;
                 //echo $e->getErrorMessage() . PHP_EOL;
             }
-            return true;
+            //判断是否成功
+            if(isset($result['Code']) && $result['Code']=="OK")
+            {
+                return true;
+            }
+            return false;
         }
     }

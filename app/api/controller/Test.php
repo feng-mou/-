@@ -6,8 +6,9 @@ declare (strict_types=1);
 use AlibabaCloud\Client\AlibabaCloud;
 use AlibabaCloud\Client\Exception\ClientException;
 use AlibabaCloud\Client\Exception\ServerException;
+//use app\common\controller\AuthBase;
 
-class Test
+class Test extends AuthBase
 {
     /**
      * @param string $phone 手机号
@@ -71,5 +72,10 @@ class Test
     public function ran(){
         $acg = Num::getCode(6);;
         var_dump($acg);
+    }
+
+    //测试中间键
+    public function authTest(){
+
     }
 }

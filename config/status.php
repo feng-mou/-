@@ -1,12 +1,13 @@
-<?php 
+<?php
 //该文件是放业务状态码提示的
-//action_not_found方法不存在-1
+//action_not_found方法不存在-3
 //controller_not_found控制器不存在-2
 //success 成功1
 //error 错误0
     return [
-        'action_not_found'=>-1,
+        'action_not_found'=>-3,
         'controller_not_found'=>-2,
+        'not_login'=>-1,
         'error'=>0,
         'success'=>1,
         //mysql相关状态配置

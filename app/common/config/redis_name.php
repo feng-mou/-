@@ -6,5 +6,5 @@
 return [
     'phone'=>'phone_',
     'phone_time'=>60,
-    'login_token'=>'login_token_',
+    'login_token'=>'login_token_'
 ];

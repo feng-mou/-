@@ -12,16 +12,23 @@
                 'phone_number'=>$phoneNumber
             ];
             try {
-                //validate判断
+                //validate判断 只判断send_code指定的
                 validate(\app\api\validate\User::class)->scene('send_code')->check($data);
             }catch ( \think\Exception\ValidateException $e ) {
                 //??
-                return json(['status' => config("status.error"), 'massage' => $e->getError()]);
+                return show(config("status.error"),$e->getError());
             }
             //$obj=new Gg();
-            if(Gg::sendCode($phoneNumber,6)){
-                return json(['status'=>config("status.success"),'massage'=>"成功发送短信"]);
+            if(Gg::sendCode($phoneNumber,6,"ali")){
+                return show(config("status.success"),"成功发送短信");
             }
-            return json(['status'=>config("status.error"),'massage'=>"发送短信失败"]);
+            return show(config("status.error"),"一天只能发10次短信");
+//            $a = rand(0,99);
+//            if($a < 80) {
+//                // 阿里云逻辑
+//            } else {
+//                // 百度云逻辑
+//            }
         }
+
     }

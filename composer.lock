@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3b6e6d2f880eb42c034ffffa54c03aa6",
+    "content-hash": "c84a4112d5bd14e3824def7835daaa2d",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -1804,6 +1804,56 @@
                 "shim"
             ],
             "time": "2020-07-14T12:35:20+00:00"
+        },
+        {
+            "name": "tencentcloud/tencentcloud-sdk-php",
+            "version": "3.0.268",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/TencentCloud/tencentcloud-sdk-php.git",
+                "reference": "24a4a7dcb1009afa0addd0c18aef3646dec7dc4d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/TencentCloud/tencentcloud-sdk-php/zipball/24a4a7dcb1009afa0addd0c18aef3646dec7dc4d",
+                "reference": "24a4a7dcb1009afa0addd0c18aef3646dec7dc4d",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.3 || ^7.0.1",
+                "guzzlehttp/psr7": "^1.4",
+                "php": ">=5.6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/QcloudApi/QcloudApi.php"
+                ],
+                "psr-4": {
+                    "TencentCloud\\": "./src/TencentCloud"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "coolli",
+                    "email": "tencentcloudapi@tencent.com",
+                    "homepage": "https://cloud.tencent.com/document/sdk/PHP",
+                    "role": "Developer"
+                }
+            ],
+            "description": "TencentCloudApi php sdk",
+            "homepage": "https://github.com/TencentCloud/tencentcloud-sdk-php",
+            "time": "2020-10-19T01:05:01+00:00"
         },
         {
             "name": "topthink/framework",
