@@ -3,3 +3,5 @@
 /vendor
 *.log
 .env
+.\app\api\config\aliyun.php
+.\app\api\config\xin.text
