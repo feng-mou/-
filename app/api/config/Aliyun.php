@@ -9,9 +9,8 @@
      * @host 返回地址
      */
     return[
-        'cc'=>11,
-        'accessKeyId'=>'LTAI4GAT2bp8K7KatXUyucuK',
-        'accessSecret'=>'25vQeT3SprTvGsP357u5W9EuzgV3zD',
+        'accessKeyId'=>'自己的去阿里云拿',
+        'accessSecret'=>'自己的去阿里云拿',
         'cn-hangzhou'=>'cn-hangzhou',
         'SignName'=>'高并发商城项目练习',
         'TemplateCode'=>'SMS_204460951',

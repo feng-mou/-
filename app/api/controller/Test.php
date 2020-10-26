@@ -25,7 +25,7 @@ class Test extends AuthBase
         if (empty($phone) || empty($code)) {
             return false;
         }
-        AlibabaCloud::accessKeyClient("LTAI4GAT2bp8K7KatXUyucuK","25vQeT3SprTvGsP357u5W9EuzgV3zD")
+        AlibabaCloud::accessKeyClient("","")
             ->regionId('cn-hangzhou')
             ->asDefaultClient();
 
