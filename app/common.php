@@ -14,3 +14,10 @@ function show($status,$message="error",$data=[],$httpsSt = 200){
 
     return json($result,$httpsSt);
 }
+
+///**
+// * 设置日志
+// * @param $res 日志
+// * @param $time 时间
+// */
+//function set_journal($res,$time){}

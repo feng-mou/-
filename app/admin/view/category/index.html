@@ -32,82 +32,92 @@
     <div class="layuimini-main">
         <a href="{:url('admin/Category/add')}"><button type="button" class="layui-btn add">添 加</button></a>
 
+        <!--面包屑导航-->
+        <div class="layui-elem-quote" style="margin-top: 10px;">
+            <a href="javascript:;"><b>当前路径：</b></a>
+            <span class="layui-breadcrumb" lay-separator=">>">
+                <a href="{:url('category/index',['pid'=>0])}">分页首页</a>
+                {volist name="breadCrumb" id="data"}
+                    <a href="{:url('category/index', ['pid' => $data.pid])}">{$data.name}</a>
+                {/volist}
+                <!--<a><cite>正文</cite></a>-->
+            </span>
+        </div>
+
         <div class="layui-form" style="margin-top: 20px;">
             <table class="layui-table">
                 <colgroup>
-                    <col width="90">
-                    <col width="110">
-                    <col width="800">
-                    <col width="130">
-                    <col width="70">
-                    <col width="85">
+                    <col width="40">
+                    <col width="80">
+                    <col width="80">
+                    <col width="80">
+                    <col width="80">
+                    <col width="80">
+                    <col width="80">
+                    <col width="40">
+                    <col width="80">
+                    <col width="80">
+                    <col width="50">
+
                 </colgroup>
                 <thead>
                 <tr>
-                    <th>id</th>
-                    <th>一级分类</th>
-                    <th class="text-center">二 / 三级分类</th>
+                    <th class="text-center">id</th>
+                    <th class="text-center">标题</th>
+                    <th class="text-center">排序</th>
                     <th class="text-center">创建时间</th>
-                    <th class="text-center">状 态</th>
-                    <th>操作管理</th>
+                    <th class="text-center">更新时间</th>
+                    <th class="text-center">操作人</th>
+                    <th class="text-center">状态</th>
+                    <th class="text-center">操作管理</th>
+                    <th class="text-center">编辑</th>
                 </tr>
                 </thead>
-                <tbody>
                 <!--一级类目循环-->
+
+                {volist name="resultList['data']" id="vo"}
                 <tr>
                     <td>
-                        <div class="layui-input-inline">
-                          <input type="text" value="1" data-id="1" class="changeSort layui-input">
-                        </div>
+                        {$vo.id}
+                    </td>
+                    <td>
+                        {$vo.name}
                     </td>
                     <td>
                         <div class="layui-input-inline">
-                            <input type="text" name="p0" autocomplete="off" class="layui-input" value="一级类目"
-                                   onchange="editCls(this,id=1,ptype=1)">
+                            <input type="text" value="{$vo.listorder}"
+                                   data-id="{$vo.id}" class="changeSort layui-input" >
                         </div>
                     </td>
                     <td>
-                        <!--二级类目循环 start-->
-                        <div class="layui-input-block" style="margin-left: 0;">
-                            <button data-ptype="2" type="button"
-                                    class="layui-btn layui-btn-primary layui-btn-sm del-child"
-                                    style="border: none;"><i class="layui-icon"></i></button>
-                            <div class="layui-input-inline">
-                                <input type="text" name="p1" style="background: #ffb800;" autocomplete="off"
-                                       class="inoutCls" onchange="editCls(this,id=1,ptype=2)" value="二级类目">
-                            </div>
-
-                            <!-- 三级类目循环 start-->
-                            <div class="layui-input-inline">
-                                --<input type="text" name="p1" autocomplete="off" class="inoutCls"
-                                         onchange="editCls(this,id=1,ptype=3)" value="1。1">
-                            </div>
-                            <div class="layui-input-inline">
-                                --<input type="text" name="p1" autocomplete="off" class="inoutCls"
-                                         onchange="editCls(this,id=1,ptype=3)" value="1。2">
-                            </div>
-                            <div class="layui-input-inline">
-                                --<input type="text" name="p1" autocomplete="off" class="inoutCls"
-                                         onchange="editCls(this,id=1,ptype=3)" value="1。3">
-                            </div>
-                            <!-- 三级类目循环 end-->
-                        </div>
-
-                        <!--二级类目循环 end-->
+                        {$vo.create_time}
                     </td>
-                    <td>2019-11-20 10:40</td>
+                    <td>
+                        {$vo.update_time}
+                    </td>
+                    <td>
+                        <span>{$vo.operate_user}</span>
+                    </td>
 
-                    <td data-id="1"><input type="checkbox" checked="" name="status" lay-skin="switch"
-                                           lay-filter="switchTest"
+                    <td data-id="{$vo.id}"><input type="checkbox" {if $vo.status == 1}checked{else /}{/if} name="status" lay-skin="switch"
+                                           lay-filter="switchStatus"
                                            lay-text="ON|OFF">
+
                     </td>
 
 
                     <td>
-                        <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete del-child" data-ptype="1"
-                           lay-event="delete" data-id="$id">删除</a>
+                        <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete delete" data-ptype="1"
+                           lay-event="delete" data-id="{$vo.id}">删除</a>
+                        <a class="layui-btn layui-btn-xs" href="{:url('admin/category/index',['pid'=>$vo.id])}">子栏目({$vo.erZis})</a>
+
+                    </td>
+                    <td>
+                        <a class="layui-btn layui-btn-xs" href="{:url('admin/category/edit',['id'=>$vo.id])}">编辑</a>
                     </td>
                 </tr>
+                {/volist}
+
                 <!--一级类目循环 end-->
                 </tbody>
             </table>
@@ -125,10 +135,20 @@
         var form = layui.form
             , laypage = layui.laypage;
 
+        //total总条数
+        //per_page 每页显示几条数据
+        //current_page 当前第几页
         laypage.render({ //分页
             elem: 'pages'
-            , count: 100
+            , count: {$resultList.total}
             , theme: '#FFB800'
+            , limit: {$resultList.per_page}
+            , curr: {$resultList.current_page}
+            ,jump:function(obj,first) {
+                if(!first) {
+                    location.href="?page="+obj.curr+"&pid={$pid}"
+                }
+            }
         });
 
 
@@ -138,15 +158,20 @@
         // });
 
         //监听状态 更改
-        form.on('switch(switchTest)', function (obj) {
-            console.log(obj.elem.checked, '改变状态')
+        form.on('switch(switchStatus)', function (obj) {
+            //console.log(obj.elem.checked, '改变状态')
 
             let id = obj.othis.parent().attr('data-id');
             let status = obj.elem.checked ? 1 : 0;
             $.ajax({
-                url: '{:url("admin/change")}?id=' + id + '&status=' + status,
+                url: '{:url("admin/Category/status")}?id=' + id + '&status=' + status,
                 success: (res) => {
-
+                    if(res.status == 1){
+                        //请求成功刷新页面
+                        //window.location.reload();
+                    }else{
+                        layer.msg(res.message);
+                    }
                 }
             });
             return false;
@@ -178,19 +203,25 @@
         }
 
         // 删除二级分类
-        $('.del-child').on('click', function () {
+        $('.delete').on('click', function () {
             let ptype = $(this).attr('data-ptype'); // fu
             let id = $(this).attr('data-id'); // fu
-            let msg = '';
-            if (ptype == 1) { // 等级类目
-                msg = '一';
-            } else if (ptype == 2) {
-                msg = '二';
-            }
-            layObj.box(`是否删除${msg}级分类`, () => {
-                let   url = '{:url("admin/del")}?id=' + id
+            // let msg = '';
+            // if (ptype == 1) { // 等级类目
+            //     msg = '一';
+            // } else if (ptype == 2) {
+            //     msg = '二';
+            // }
+            layObj.box(`是否删除此级分类`, () => {
+                let   url = '{:url("admin/category/del")}?id=' + id+"&status=99"
                 layObj.get(url,  (res) =>{
-                    $(this).parent().remove()
+                    //$(this).parent().remove()
+                    if(res.status == 1){
+                        //请求成功刷新页面
+                    window.location.reload();
+                }else{
+                    layer.msg(res.message);
+                }
                 })
 
             })
@@ -203,16 +234,33 @@
             if(!val){
                 return;
             }
-            let url = '{:url("admin/sort")}?id=' + id + '&sort='+val;
+            let url = '{:url("admin/category/listorder")}?id=' + id + '&listorder='+val;
             //let url = 'http:www.baidu.com';
             layObj.get(url,function (res) {
-                console.log(res, 'sort');
+                //alert(1);
+                // console.log(res, 'sort');
+                if(res.status == 1){
+                    //请求成功刷新页面
+                    window.location.reload();
+                }else{
+                    layer.msg(res.message);
+                }
             })
 
         })
 
 
     })
+</script>
+<script>
+    layui.use('element',function () {
+        var element = layui.element;
+
+        //监听导航点击
+        element.on('nav(demo)',function(elem){
+            layer.msg(elem.text());
+        });
+    });
 </script>
 </body>
 </html>

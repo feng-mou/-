@@ -1,15 +1,13 @@
 <?php
-declare (strict_types = 1);
-
 namespace app\api\controller;
 
-class Index
+class Index extends AuthBase
 {
-    public function test(){
-        echo config('aliyun.accessKeyId');
-    }
-    public function index()
-    {
-        return '您好！这是一个[api]示例应用';
+    public function getRotationChart(){
+        if($this->request->isGet()){
+
+            return show(config('status.success'),"请求方式正确");
+        }
+        return show(config('status.error'),"请求方式错误");
     }
 }

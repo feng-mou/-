@@ -8,6 +8,7 @@
     <title>添加商品分类</title>
     <link rel="stylesheet" href="{__STATIC__}admin/lib/layui-v2.5.4/css/layui.css" media="all">
     <link rel="stylesheet" href="{__STATIC__}admin/css/public.css" media="all">
+
 </head>
 <body>
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
@@ -33,7 +34,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label" style="width: 200px;"></label>
         <div class="layui-input-inline">
-            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="demo1">立即提交</button>
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="demo1">立即修改</button>
         </div>
     </div>
 </form>
@@ -47,17 +48,18 @@
         function _classif(res=[]) {
             // res 分类数据 先期模拟
             let temps = '<option value="0">-| 顶级菜单</option>';
-            var data = [
-                {id: 1, name: "办公管理", pid: 0},
-                {id: 2, name: "请假申请", pid: 1},
-                {id: 3, name: "出差申请", pid: 1},
-                {id: 4, name: "请假记录", pid: 2},
-                {id: 5, name: "系统设置", pid: 0},
-                {id: 6, name: "权限管理", pid: 5},
-                {id: 7, name: "用户角色", pid: 6},
-                {id: 8, name: "菜单设置", pid: 6},
-            ];
-
+            // var data = [
+            //     {id: 1, name: "办公管理", pid: 0},
+            //     {id: 2, name: "请假申请", pid: 1},
+            //     {id: 3, name: "出差申请", pid: 1},
+            //     {id: 4, name: "请假记录", pid: 2},
+            //     {id: 5, name: "系统设置", pid: 0},
+            //     {id: 6, name: "权限管理", pid: 5},
+            //     {id: 7, name: "用户角色", pid: 6},
+            //     {id: 8, name: "菜单设置", pid: 6},
+            // ];
+            //没有|raw模板无法输出变量
+            var data = {$category|raw};
             let toTrees = toTree(data);
             for (let item of toTrees) {
                 temps += `<optgroup  data-id="${item["id"]}">`;
@@ -97,7 +99,9 @@
                 url: '/admin/Category/save',
                 success(res){
                   if(res.status == 1){
-                      layer.msg(res.message);
+                      layer.msg(res.message,function(){
+                          //window.location="{:url('admin/category/index')}";
+                      });
                   }else{
                       layer.msg(res.message);
                       return false;

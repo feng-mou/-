@@ -20,7 +20,7 @@
             if(empty($phone) || empty($code)) {
                 return false;
             }
-            AlibabaCloud::accessKeyClient(config('aliyun.accessKeyId'),config('aliyun.accessSecret'))
+            AlibabaCloud::accessKeyClient(('LTAI4G2fFyXTsZRPDywZhaZZ'),'b2vRFJsD8zoG1Xu433UlPjlOcJMHnP')
                 ->regionId("cn-hangzhou")
                 ->asDefaultClient();
 

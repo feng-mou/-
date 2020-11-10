@@ -3,18 +3,18 @@
     use think\facade\View;
     use app\admin\controller\BaseAdmin;
     class Index extends BaseAdmin{
-       
-        //äÖÈ¾indexÒ³Ãæ
+
+        //æ¸²æŸ“indexé¡µé¢
         public function index()
         {
             //echo 1;
             return View::fetch('index/index');
             //return redirect('https://www.baidu.com')->send();
-            
+
         }
-        
+
         public function welcome(){
-            return View::fetch('index/welcome'); 
+            return View::fetch('index/welcome');
             //return $this->redirect(url("index/index"));
             //return redirect('index/welcome');
         }

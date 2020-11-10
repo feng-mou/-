@@ -9,6 +9,6 @@
      * @host 返回地址
      */
     return[
-        'accessKeyId'=>'LTAI4GAT2bp8K7KatXUyucuK',
-        'accessSecret'=>'25vQeT3SprTvGsP357u5W9EuzgV3zD',
+        'accessKeyId'=>'LTAI4G2fFyXTsZRPDywZhaZZ',
+        'accessSecret'=>'b2vRFJsD8zoG1Xu433UlPjlOcJMHnP',
     ];
