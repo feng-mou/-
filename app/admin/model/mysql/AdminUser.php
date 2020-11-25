@@ -27,8 +27,14 @@ class AdminUser extends Model
         return $result;
     }
 
-    //更新数据
+    /**
+     * 根据id更新admin_user数据
+     * @param $id
+     * @param $data
+     * @return bool
+     */
     public function updateById($id,$data){
+        //转int类型
         $id=intval($id);
         if(empty($id) || empty($data) || !is_array($data)){
             return false;
@@ -37,6 +43,7 @@ class AdminUser extends Model
         $where = [
             'id'=>$id
         ];
+        //更新数据并返回结果,save方法先查是否有这数据有就更新,没有就插入
         return $this->where($where)->save($data);
     }
 }

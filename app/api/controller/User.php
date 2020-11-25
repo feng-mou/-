@@ -12,15 +12,17 @@
          * @time 2020.9.10
          * @return \think\response\Json
          */
+        //public $sex = "";
         public function index()
         {
             //echo "登录成功";
             $result = (new UserBis())->getUser($this->UserId);
             $resultUser = [
-                'id'=>$this->UserId,
-                'username'=>$this->UserName,
-
+                'id'=>$result['id'],
+                'username'=>$result['username'],
+                'sex'=>$result['sex']
             ];
+
             return show(config('status.success'),"OK",$resultUser);
         }
 
@@ -38,30 +40,48 @@
                 'username'=>$username,
                 'sex'=>$sex
             ];
+            //return show(config('status.error'),"$sex");
             //判断参数是否正确
             try {
                 validate(\app\api\validate\User::class)->scene('update_user')->check($data);
             }catch( \think\Exception\ValidateException $e){
                 return show(config('status.error'),$e->getError());
             }
-            //判断是否有值或参数错误,全部过了才会更新
+
+            $redisRes=cache(config('redis_name.login_token').$this->accessToken);
+            $result = json_decode($redisRes,true);
+            if($username == $result['username']){
+                //return show(config('status.error'),"名字一样");
+                //更新性别
+                try{
+                    $obj = new UserBis();
+                    $yy = $obj->update_user_sex($this->UserId,$sex);
+                }catch( \Exception $e){
+                    return show(config('status.error'),$e->getMessage());
+                }
+                return  show(config('status.success'),"更新性别成功");
+            }
+
+            //更新性别加名字
             try{
                 $obj = new UserBis();
                 $result = $obj->update_user($this->UserId,$data);
             }catch( \Exception $e){
                 return show(config('status.error'),$e->getMessage());
             }
-
             //$userInfo = cache(config('redis_name.login_token').$this->accessToken,json_encode($data,true),Login_token_time::getLoginTokenTime(1));
-            //$userInfos = json_decode($userInfo,true);
-
             return  show(config('status.success'),"更新数据成功");
         }
 
         //测试redis
         public function test(){
-            $result = cache("cpdd2","cpdd_1999",Login_token_time::getLoginTokenTime(2));
-            $results = cache("cpdd");
-            dump($results);
+            $result=cache(config('redis_name.login_token').$this->accessToken);
+            echo Login_token_time::getLoginTokenTime(1);
+            $test = json_decode($result,true);
+            dump($test);
+            echo "<br/>";
+            dump($test['id']);
+            echo "<br/>";
+            dump($this->UserId);
         }
     }

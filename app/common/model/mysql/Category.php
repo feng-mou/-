@@ -65,7 +65,7 @@ class Category extends Model
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function cnm($field = "*"){
+    public function getCnm($field = "*"){
         $where = [
             'status'=>config('status.mysql.table_normal')
         ];
@@ -144,6 +144,14 @@ class Category extends Model
         return $this->field('id,name,pid')->where('id','=',$id)->find();
     }
 
+    /**
+     * @param $pid
+     * @param $field
+     * @return \think\Collection
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
     public function getResult($pid,$field){
         $pid = intval($pid);
         $where = [
@@ -155,6 +163,16 @@ class Category extends Model
         ];
         $result = $this->field($field)->where($where)->order($order)->select();
         return $result;
+    }
+
+    public function getChildCount($pids){
+        $where[] = ['pid',"in",$pids['pid']];
+        $where[] = ["status","<>",config("status.mysql.table_delete")];
+        $res = $this->where($where)
+            ->field(['pid',"count(*) as count"])
+            ->group("pid")
+            ->select();
+        return $res;
     }
 }
 

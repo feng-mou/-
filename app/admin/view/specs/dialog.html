@@ -137,7 +137,7 @@
                 let html = ''
                 projectArr = res.result;
                 projectArr.forEach(function (item) {
-                    html += '<button type="button" data-specs-value-id="'+item.id+'" class="layui-btn layui-btn-sm layui-btn-normal" style="margin-top: 12px"> <b>' + item.name + '</b><i class="layui-icon del-child-tags" style="padding-left: 12px;"></i></button>'
+                    html += '<button type="button" data-specs-value-id="'+item.id+'" class="layui-btn layui-btn-sm layui-btn-normal" style="margin-top: 12px"> <b>' + item.name + '</b><i class="layui-icon del-child-tags" data-id="'+item.id+'"style="padding-left: 12px;"></i></button>'
                 })
                 $specleft = $('.spec-right')
                 $($specleft).html(html)
@@ -153,17 +153,6 @@
         })
 
 
-        // 删除规格值按钮
-        $('html').on('click', '.del-child-tags', function () {
-            $(this).parent().remove()
-            console.log($('this').attr('data-specs-value-id'));
-            let specs_id = $('this').attr('data-specs-value-id');
-            //let specs_id = $('this')[0].getAttribute('data-specs-value');
-            alert(specs_id)
-            // var index = parent.layer.getFrameIndex(window.name);
-            // parent.layer.close(index);
-        })
-
         // 添加规格标签
         $('#add-spec-tags').on('keypress', function (e) {
 
@@ -178,7 +167,7 @@
                         layer.msg(res.message);
                         return false;
                     }
-                    let tag = '<button type="button" data-specs-value-id="99" class="layui-btn layui-btn-sm layui-btn-normal" style="margin-top: 12px"><b>' + tags + '</b> <i class="layui-icon del-child-tags" style="padding-left: 12px;"></i></button>'
+                    let tag = '<button type="button" class="layui-btn layui-btn-sm layui-btn-normal" style="margin-top: 12px"><b>' + tags + '</b> <i class="layui-icon del-child-tags" style="padding-left: 12px;"></i></button>'
                     $('.spec-right').append(tag)
                     $(this).val('');
                 });
@@ -186,6 +175,16 @@
             }
         })
 
+        // 删除规格值按钮
+        $('html').on('click', '.del-child-tags', function () {
+            $(this).parent().remove()
+            console.log($('this').attr('data-specs-value-id'));
+            let specs_id = $(this).attr('data-id');
+            //let specs_id = $('this')[0].getAttribute('data-specs-value');
+            alert(specs_id)
+            // var index = parent.layer.getFrameIndex(window.name);
+            // parent.layer.close(index);
+        })
 
         // 提交规格值到商品页面
         $('html').on('click', '.classify-btn', function () {

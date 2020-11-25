@@ -42,7 +42,6 @@
                 } catch( \Exception $e) {
                     throw new \think\Exception("数据库内部异常");
                 }
-                //throw new \think\Exception("数据新增成功");
 
             }else{
                 //更新数据
@@ -56,7 +55,6 @@
             $redisData = [
                 'id'=>$userId,
                 'username'=>$username,
-                'sex'=>0
             ];
 
             //加密
@@ -77,6 +75,18 @@
             return $results->toArray();
         }
 
+        //修改个人性别
+        public function update_user_sex($id,$sex){
+            if(empty($id)){
+                throw new \think\Exception("参数错误");
+            }
+            $result = $this->userObj->get_username_sex($id,$sex);
+            if($result){
+                return true;
+            }
+            return false;
+        }
+
         //修改个人信息
         public function update_user($id,$data){
             if(empty($id) || empty($data) || !is_array($data)){
@@ -84,7 +94,7 @@
             }
             $usernameResult = $this->userObj->get_username($data['username']);
             if($usernameResult){
-                throw new \think\Exception("用户名已存在");
+                throw new \think\Exception("用户名已存在,换个名字试试");
             }
             return $this->userObj->update_user($id,$data);
         }

@@ -12,7 +12,6 @@ class AdminUser{
     }
     public function login($data)
     {
-        //$obj=new \app\admin\model\mysql\AdminUser();
         $res=$this->getAdminUser($data['username']);
         //不存在场景
         if(!$res)
@@ -20,10 +19,6 @@ class AdminUser{
             //抛出错误异常
             throw new \think\Exception("用户不存在");
         }
-        /*if(empty($result)||$result->status!=config('status.mysql.table_normal')){
-            //抛出错误异常
-            throw new \think\Exception("用户不存在");
-        }*/
         //判断密码是否正确
         if($res['password'] != md5($data['password']))
         {
@@ -31,6 +26,7 @@ class AdminUser{
             throw new \think\Exception("密码错误");
         }
 
+        //获取id来更新数据库
         $id=$res['id'];
         $data2=[
             'update_time'=>time(),
@@ -44,6 +40,7 @@ class AdminUser{
             //抛出错误异常
             throw new \think\Exception("登录失败");
         }
+        //存入session
         session(config('admin.session_admin'),$res);
         return true;
     }

@@ -1,13 +1,13 @@
 <?php
 namespace app\api\controller;
-
-class Index extends AuthBase
+use app\common\business\Goods;
+class Index extends ApiBase
 {
     public function getRotationChart(){
-        if($this->request->isGet()){
+        $categoryObj = new Goods;
 
-            return show(config('status.success'),"请求方式正确");
-        }
-        return show(config('status.error'),"请求方式错误");
+        $result = $categoryObj->getRotationChart();
+        dd($result);
+        return show(config('status.success'),"请求成功",$result);
     }
 }

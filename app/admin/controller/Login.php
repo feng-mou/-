@@ -4,6 +4,8 @@
     use think\captcha\facade\Captcha;
     use app\admin\controller\BaseAdmin;
     use app\admin\model\mysql\AdminUser;
+    //错误日志门面模式
+    use think\facade\Log;
     //引入云通信
     use app\common\lib\Ytx;
     class Login extends BaseAdmin{
@@ -15,9 +17,9 @@
 
         //登入验证
         public function check(){
+            //判断是否是post方法提交,不是就返回错误
             if(!$this->request->isPost()){
                 return show(config("status.error"),"请求错误");
-                //return json(['status'=>config("status.error"),'msg'=>"请求错误"]);
             }
             //param第一个参数为传来的name名,二为不知道,3为过滤
             $username = $this->request->param("username","","trim");
@@ -34,33 +36,25 @@
             $validate = new \app\admin\validate\AdminUser;
             if(!$validate->check($cc)){
                 return show(config("status.error"),$validate->getError());
-                //return json(['status'=>config("status.error"),'msg'=>$validate->getError()]);
             }
 
-            /*if(empty($username) || empty($password) || empty($captcha)){
-                return json(['status'=>config("status.error"),'msg'=>" 参数错误"]);
-            }*/
-
             //把app目录下面的middleware.php文件的Session初始化\think\middleware\SessionInit::class打开
-
             if(!captcha_check($captcha)){
                 return show(config("status.error"),"验证码错误");
-                //return json(['status'=>config("status.error"),'msg'=>"验证码错误"]);
             }
             try{
                 $AdminUserObj=new \app\admin\business\AdminUser();
                 $result = $AdminUserObj->login($cc);
             } catch (\Exception $e){
+                Log::error('login登录数据库异常'.$e->getMessage());
                 return show(config("status.error"),$e->getMessage());
-                //return json(['status'=>config("status.error"),'msg'=>$e->getMessage()]);
             }
             //判断是否为true否则弹出错误
             if($result){
+                Log::record(time().'登录成功');
                 return show(config("status.success"),"登录成功");
-                //return json(['status'=>config("status.success"),'msg'=>"登录成功"]);
             }
             return show(config('status.error'),$AdminUserObj->getError());
-            //return json(['status'=>config("status.error"),'msg'=>$AdminUserObj->getError()]);
         }
 
         //继承文件方法会有点问题
@@ -75,11 +69,11 @@
         }*/
 
         public function md5(){
-            //session(config('admin.session_admin'),'张三');
-            //halt(session(config('admin.session_admin')));
+            //生成md5加密的密码
             echo md5('admin');
         }
 
+        //短信测试
         public function sms(){
             echo 1;
             //$smsYtx = new Ytx();

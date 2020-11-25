@@ -25,5 +25,5 @@ return [
     //引用
     'tpl_replace_string'=>[
         '{__STATIC__}'=>'/static/',
-    ] 
+    ]
 ];

@@ -4,12 +4,16 @@ use think\facade\View;
 use app\common\business\Category as categoryModel;
 use app\common\lib\Status;
 use app\common\lib\Arr;
+use think\facade\Log;
 class Category extends BaseAdmin
 {
     /**
      * 初始页面排序 默认pid从0上级开始,每页分5条数据
      * 优先listorder倒排序如果一样就根据id排倒序
      * @return string
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function index()
     {
@@ -17,24 +21,13 @@ class Category extends BaseAdmin
         $data = [
             'pid'=>$pid
         ];
-//        try{
-//            $resultList = (new categoryModel())->getList($data,5);
-//            $breadCrumb = (new categoryModel())->getBreadCrumb($pid);
-//        }catch(\think\Exception $e){
-//            $resultList = [
-//                "total" => 0,
-//                "per_page" => 5,
-//                "current_page" => 1,
-//                "last_page" => 1,
-//                "data" => []
-//            ];
-//            $breadCrumb = [];
-//        }
-
+        //如果没有查到数据就给他设置好的一个空数组
         if(empty($resultList = (new categoryModel())->getList($data,5))){
+            log::record("没有数据");
             $resultList = Arr::pagingNo();
         }
         if(empty($breadCrumb = (new categoryModel())->getBreadCrumb($pid))){
+            log::record("没有面包");
             $breadCrumb = [];
         }
         return View::fetch('category/index',

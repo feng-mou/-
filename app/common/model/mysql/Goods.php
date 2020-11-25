@@ -125,4 +125,31 @@
             $res = $this->where($where)->save($update);
             return $res;
         }
+
+        /**
+         * 获取首页推荐轮播图
+         * @param $where
+         * @param $limit
+         * @return \think\Collection
+         * @throws \think\db\exception\DataNotFoundException
+         * @throws \think\db\exception\DbException
+         * @throws \think\db\exception\ModelNotFoundException
+         */
+        public function getRotation($where,$limit,$field){
+            $order = [
+                'listorder'=>'desc',
+                'id'=>'desc'
+            ];
+            $result = $this->field($field)->where($where)->limit($limit)->order($order)->select();
+            return $result;
+        }
+
+        /**
+         * @param $value 图片路径
+         * @return string
+         */
+        public function getImageAttr($value){
+            return request()->domain().$value;
+        }
+
     }

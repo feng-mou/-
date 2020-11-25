@@ -22,7 +22,7 @@ class Goods extends BaseAdmin{
             $data['title'] = $title;
         }
         //dump($data);
-
+        //dump(md5("fzq5201314.."));
         if(empty($resultList = (new GoodsModel())->getList($data,5))){
             $resultList = Arr::pagingNo();
         }

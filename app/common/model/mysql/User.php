@@ -44,6 +44,20 @@
             return $this->find($id);
         }
 
+        //更新性别
+        public function get_username_sex($id,$sex){
+            $update = [
+                'sex'=>$sex
+            ];
+            $result = $this->where('id','=',$id)->update($update);
+            if($result){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        //获取用户数据
         public function get_username($username){
             if(empty($username)){
                 return false;

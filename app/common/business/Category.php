@@ -30,14 +30,31 @@
             return $result->toArray();
         }
 
+        /**
+         * 无限级分类
+         * @return array|\think\Collection
+         * @throws \think\db\exception\DataNotFoundException
+         * @throws \think\db\exception\DbException
+         * @throws \think\db\exception\ModelNotFoundException
+         */
         public function cnm(){
             $field = "id as category_id, name ,pid";
-            $result = $this->categoryObj->cnm($field);
+            $result = $this->categoryObj->getCnm($field);
             if(empty($result)){
                 return $result;
             }
             return $result->toArray();
         }
+
+        /**
+         * 添加商品分类
+         * @param $data
+         * @return mixed
+         * @throws Exception
+         * @throws \think\db\exception\DataNotFoundException
+         * @throws \think\db\exception\DbException
+         * @throws \think\db\exception\ModelNotFoundException
+         */
         public function add($data){
             //用父类的save方法加数据
             $data['status']=config('status.mysql.table_normal');
@@ -58,45 +75,22 @@
         }
 
         /**
-         * 2020.9.9 18:44:00
-         * @param $data
-         * @param $num
+         * 根据id=pid查询有多少数据
+         * @param $data pid
+         * @param $num  数量
          * @return array
+         * @throws \think\db\exception\DbException
          */
         public function getList($data,$num)
         {
-            //$data['status']=config('status.mysql.table_normal');
             $list = $this->categoryObj->getLastS($data,$num);
-            //返回的是一个对象,对象里面是空
-//            if(!$list){
-//                return [];
-//            }
             $result = $list->toArray();
-            //return $result;
-
             //获取有多少子栏目
             $arrayPids = array_column($result['data'],'id');
+            //dump($arrayPids);
             $pids = implode(",", $arrayPids);
-            //return $pids;
             if($pids){
-                //return $result;
-                $where="SELECT
-	                        pid,count( * ) AS count
-                        FROM
-	                        mall_category
-                        WHERE
-	                        pid IN ( $pids )
-                        AND
-                            status <> 99
-                        GROUP BY
-	                        pid";
-                //取出来的是数组
-                $acg = Db::query($where);
-                //判断是否是数组
-                if(!is_array($acg)){
-                    return [];
-                }
-                //return $result;
+                $acg = $this->categoryObj->getChildCount(['pid'=>$pids]);
                 //循环把pidCounts加入字段
                 $ziPiss = [];
                 foreach($acg as $key){

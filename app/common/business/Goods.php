@@ -38,6 +38,7 @@ class Goods{
         //$this->model->startTrans();
         try {
             //插入数据并获取id给下面的逻辑用
+            //'status'=>1
             $result = $this->model->save($data);
             if (!$result) {
                 throw new \Exception("数据插入失败");
@@ -70,6 +71,8 @@ class Goods{
                         'stock' => $stock,
                         //商品默认的sku_id
                         'sku_id' => $res[0]['id'],
+                        //状态
+                        'status'=>1
                     ];
                     $goodsRes = $this->model->updateById($goods_id, $goodsUpdateData);
                     if (!$goodsRes) {
@@ -146,6 +149,21 @@ class Goods{
             throw new \Exception("修改失败");
         }
         return true;
+    }
+
+    public function getRotationChart(){
+        $where = [
+            'status'=>1,
+            'is_index_recommend'=>1
+        ];
+        $field = "sku_id as id,big_image as image";
+        try{
+            $result = $this->model->getRotation($where,5,$field);
+        }catch (\Exception $e){
+            return [];
+        }
+        return $result->toArray();
+
     }
 }
 ?>
