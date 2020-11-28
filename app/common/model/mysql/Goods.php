@@ -149,7 +149,8 @@
          * @return string
          */
         public function getImageAttr($value){
-            return request()->domain().$value;
+            return 'http://tp6.cc/'.$value;
+            //return request()->domain().$value;
         }
 
     }

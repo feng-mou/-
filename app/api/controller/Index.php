@@ -7,7 +7,7 @@ class Index extends ApiBase
         $categoryObj = new Goods;
 
         $result = $categoryObj->getRotationChart();
-        dd($result);
+        //dd($result);
         return show(config('status.success'),"请求成功",$result);
     }
 }
